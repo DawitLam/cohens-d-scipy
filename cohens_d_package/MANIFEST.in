@@ -1,0 +1,8 @@
+include README.md
+include LICENSE
+include pyproject.toml
+include MANIFEST.in
+recursive-include cohens_d *.py
+recursive-include tests *.py
+global-exclude __pycache__
+global-exclude *.py[co]

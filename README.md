@@ -4,6 +4,10 @@
 [![Python](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/downloads/)
 [![NumPy](https://img.shields.io/badge/numpy-1.17%2B-orange)](https://numpy.org/)
 [![SciPy](https://img.shields.io/badge/scipy-compatible-green)](https://scipy.org/)
+[![GitHub Stars](https://img.shields.io/github/stars/DawitLam/cohens-d-scipy)](https://github.com/DawitLam/cohens-d-scipy/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/DawitLam/cohens-d-scipy)](https://github.com/DawitLam/cohens-d-scipy/network)
+[![Code Style](https://img.shields.io/badge/code%20style-black-000000)](https://github.com/psf/black)
+[![Status](https://img.shields.io/badge/status-production%20ready-brightgreen)](https://github.com/DawitLam/cohens-d-scipy)
 
 A robust, production-ready implementation of Cohen's d effect size calculation designed for integration into SciPy's statistics module. This implementation fills a gap in SciPy's current offerings by providing a comprehensive Cohen's d function with full support for edge cases, multidimensional arrays, and flexible parameter options.
 
