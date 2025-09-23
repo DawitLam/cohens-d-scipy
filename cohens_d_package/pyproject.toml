@@ -35,10 +35,10 @@ dependencies = [
 dynamic = ["version"]
 
 [project.urls]
-Homepage = "https://github.com/DawitLam/cohens-d"
-Documentation = "https://github.com/DawitLam/cohens-d#readme"
-Repository = "https://github.com/DawitLam/cohens-d.git"
-"Bug Tracker" = "https://github.com/DawitLam/cohens-d/issues"
+Homepage = "https://github.com/DawitLam/cohens-d-scipy"
+Documentation = "https://github.com/DawitLam/cohens-d-scipy#readme"
+Repository = "https://github.com/DawitLam/cohens-d-scipy.git"
+"Bug Tracker" = "https://github.com/DawitLam/cohens-d-scipy/issues"
 
 [project.optional-dependencies]
 dev = [

@@ -211,6 +211,141 @@ class TestCohensD:
         result = cohens_d(x, y)
         assert_allclose(result, expected, rtol=1e-10)
 
+    def test_paired_samples_basic(self):
+        """Test basic paired samples functionality."""
+        pre = np.array([10, 12, 11, 14, 13])
+        post = np.array([13, 15, 12, 16, 15])
+        
+        # Calculate manually
+        differences = pre - post
+        expected = np.mean(differences) / np.std(differences, ddof=1)
+        
+        result = cohens_d(pre, post, paired=True)
+        assert_allclose(result, expected, rtol=1e-10)
+        
+        # Should be different from independent calculation
+        independent = cohens_d(pre, post, paired=False)
+        assert not np.isclose(result, independent)
+
+    def test_paired_validation(self):
+        """Test paired parameter validation."""
+        x = np.array([1, 2, 3])
+        
+        # Should raise error if y is None and paired=True
+        with pytest.raises(ValueError, match="paired=True requires both x and y"):
+            cohens_d(x, paired=True)
+
+    def test_bias_correction_basic(self):
+        """Test Hedges g bias correction."""
+        x = np.array([1, 2, 3, 4, 5])
+        y = np.array([3, 4, 5, 6, 7])
+        
+        d_raw = cohens_d(x, y, bias_correction=False)
+        g_corrected = cohens_d(x, y, bias_correction=True)
+        
+        # Bias correction should reduce magnitude
+        assert abs(g_corrected) < abs(d_raw)
+        
+        # Manual calculation of correction factor
+        n1, n2 = len(x), len(y)
+        df = n1 + n2 - 2
+        correction_factor = 1 - 3 / (4 * df - 1)
+        expected_g = d_raw * correction_factor
+        
+        assert_allclose(g_corrected, expected_g, rtol=1e-10)
+
+    def test_bias_correction_one_sample(self):
+        """Test bias correction for one-sample case."""
+        x = np.array([1, 2, 3, 4, 5])
+        
+        d_raw = cohens_d(x, bias_correction=False)
+        g_corrected = cohens_d(x, bias_correction=True)
+        
+        # Manual calculation
+        n = len(x)
+        df = n - 1
+        correction_factor = 1 - 3 / (4 * df - 1)
+        expected_g = d_raw * correction_factor
+        
+        assert_allclose(g_corrected, expected_g, rtol=1e-10)
+
+    def test_bias_correction_paired(self):
+        """Test bias correction for paired samples."""
+        pre = np.array([10, 12, 11, 14, 13])
+        post = np.array([13, 15, 12, 16, 15])
+        
+        d_raw = cohens_d(pre, post, paired=True, bias_correction=False)
+        g_corrected = cohens_d(pre, post, paired=True, bias_correction=True)
+        
+        # Manual calculation
+        n = len(pre)
+        df = n - 1
+        correction_factor = 1 - 3 / (4 * df - 1)
+        expected_g = d_raw * correction_factor
+        
+        assert_allclose(g_corrected, expected_g, rtol=1e-10)
+
+    def test_paired_nan_handling(self):
+        """Test NaN handling for paired samples."""
+        x = np.array([1.0, 2.0, np.nan, 4.0, 5.0])
+        y = np.array([1.2, 2.8, 3.5, np.nan, 5.1])
+        
+        # With omit policy, should use only valid pairs
+        result = cohens_d(x, y, paired=True, nan_policy='omit')
+        
+        # Manual calculation with all valid pairs
+        valid_mask = ~(np.isnan(x) | np.isnan(y))
+        valid_x = x[valid_mask]  # [1.0, 2.0, 5.0]
+        valid_y = y[valid_mask]  # [1.2, 2.8, 5.1]
+        differences = valid_x - valid_y
+        expected = np.mean(differences) / np.std(differences, ddof=1)
+        
+        assert_allclose(result, expected, rtol=1e-10)
+
+    def test_paired_axis_parameter(self):
+        """Test paired samples with axis parameter."""
+        # 2D array where each row is a pair
+        pre = np.array([[10, 12], [11, 14], [13, 15]])
+        post = np.array([[13, 15], [12, 16], [15, 17]])
+        
+        # Calculate along axis=0 (across subjects)
+        result_axis0 = cohens_d(pre, post, paired=True, axis=0)
+        
+        # Manual calculation
+        diff = pre - post
+        expected = np.mean(diff, axis=0) / np.std(diff, axis=0, ddof=1)
+        
+        assert_allclose(result_axis0, expected, rtol=1e-10)
+        assert result_axis0.shape == (2,)
+
+    def test_multidimensional_paired(self):
+        """Test paired samples with multidimensional arrays."""
+        np.random.seed(42)
+        pre = np.random.normal(10, 2, (5, 3))
+        post = pre + np.random.normal(1, 0.5, (5, 3))
+        
+        # Test different axes
+        result_axis0 = cohens_d(pre, post, paired=True, axis=0)
+        result_axis1 = cohens_d(pre, post, paired=True, axis=1)
+        
+        assert result_axis0.shape == (3,)
+        assert result_axis1.shape == (5,)
+
+    def test_edge_cases_with_new_features(self):
+        """Test edge cases with paired and bias correction."""
+        # Small samples with bias correction
+        x_small = np.array([1, 2])
+        y_small = np.array([2, 3])
+        
+        # Should work but df will be very small
+        result = cohens_d(x_small, y_small, bias_correction=True)
+        assert not np.isnan(result)
+        
+        # Extremely small sample (df <= 1)
+        x_tiny = np.array([1])
+        result_tiny = cohens_d(x_tiny, bias_correction=True)
+        assert np.isnan(result_tiny)  # Should be NaN when df <= 1
+
 if __name__ == '__main__':
     # Run basic tests
     pytest.main([__file__])
