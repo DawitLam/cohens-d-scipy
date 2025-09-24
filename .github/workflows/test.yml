@@ -1,0 +1,57 @@
+name: Cross-Platform Testing
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
+        
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        cd cohens_d_package
+        pip install -e ".[test]"
+        
+    - name: Run standard tests
+      run: |
+        cd cohens_d_package
+        python -m pytest tests/ -v --tb=short
+        
+    - name: Run intensive validation (Linux/Mac only)
+      if: runner.os != 'Windows'
+      run: |
+        cd intensive_testing
+        python test_numerical_validation.py
+        python test_edge_cases.py
+        python test_performance.py
+        python test_multidimensional.py
+        
+    - name: Run ASCII-compatible validation (Windows)
+      if: runner.os == 'Windows'
+      run: |
+        cd intensive_testing
+        python validate_ascii.py
+        
+    - name: Test package installation
+      run: |
+        pip install build
+        cd cohens_d_package
+        python -m build
+        pip install dist/*.whl
+        python -c "import cohens_d; print(f'Cohen d installed successfully: {cohens_d.__version__}')"
