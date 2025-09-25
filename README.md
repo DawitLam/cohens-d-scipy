@@ -20,13 +20,13 @@ A robust, production-ready implementation of Cohen's d effect size calculation d
 ```
 cohens_d_package/
 ├── cohens_d/
-│   ├── __init__.py
-│   ├── __version__.py
-│   └── core.py              # Main implementation
+│ ├── __init__.py
+│ ├── __version__.py
+│ └── core.py # Main implementation
 ├── tests/
-│   └── test_cohens_d.py     # Comprehensive test suite
-├── pyproject.toml           # Package configuration
-└── README.md                # Package documentation
+│ └── test_cohens_d.py # Comprehensive test suite
+├── pyproject.toml # Package configuration
+└── README.md # Package documentation
 ```
 
 ## Usage Examples
@@ -53,13 +53,13 @@ print(f"Hedges' g: {d_corrected:.3f}")
 
 # One-sample Cohen's d
 sample = np.array([1.5, 2.2, 3.1, 4.0, 4.8])
-d_one = cohens_d(sample)  # Compare against zero
+d_one = cohens_d(sample) # Compare against zero
 print(f"One-sample Cohen's d: {d_one:.3f}")
 
 # Multidimensional arrays
 data1 = np.random.randn(50, 3)
 data2 = np.random.randn(60, 3)
-d_multi = cohens_d(data1, data2, axis=0)  # Cohen's d for each column
+d_multi = cohens_d(data1, data2, axis=0) # Cohen's d for each column
 print(f"Effect sizes: {d_multi}")
 
 # Handle missing data
@@ -87,9 +87,9 @@ python -m pytest tests/ -v
 ## API Reference
 
 ```python
-cohens_d(x, y=None, *, paired=False, bias_correction=False, axis=None, 
-         nan_policy='propagate', ddof=1, keepdims=False, 
-         alternative='two-sided', pooled=True)
+cohens_d(x, y=None, *, paired=False, bias_correction=False, axis=None,
+ nan_policy='propagate', ddof=1, keepdims=False,
+ alternative='two-sided', pooled=True)
 ```
 
 **Parameters:**
@@ -111,7 +111,7 @@ cohens_d(x, y=None, *, paired=False, bias_correction=False, axis=None,
 - **API Complete**: All planned features implemented
 - **Tests Passing**: 32 comprehensive tests with edge case coverage
 - **SciPy Compatible**: Follows scipy.stats conventions
-- **Documentation**: Complete API documentation and examples  
+- **Documentation**: Complete API documentation and examples
 
 ## Contributing
 

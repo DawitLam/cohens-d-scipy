@@ -35,9 +35,9 @@ python -c "import cohens_d; print(f'Package test: Cohen d v{cohens_d.__version__
 
 echo ""
 if [ $test_exit -eq 0 ]; then
-    echo "✅ All cross-platform tests PASSED"
-    exit 0
+ echo "[PASS] All cross-platform tests PASSED"
+ exit 0
 else
-    echo "❌ Some tests FAILED"
-    exit 1
+ echo "[FAIL] Some tests FAILED"
+ exit 1
 fi

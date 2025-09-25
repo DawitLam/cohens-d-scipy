@@ -1,7 +1,7 @@
 """
 Cohen's d Effect Size Calculator
 
-A Python package for calculating Cohen's d effect size for one-sample and 
+A Python package for calculating Cohen's d effect size for one-sample and
 two-sample comparisons. Provides comprehensive options for handling missing data,
 different axes, and pooled vs unpooled standard deviations.
 
