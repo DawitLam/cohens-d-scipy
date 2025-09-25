@@ -206,7 +206,7 @@ def test_edge_cases_multidimensional():
     x_single = np.array([[1], [2], [3]])  # 3×1
     y_single = np.array([[2], [3], [4]])  # 3×1
     
-    # Should work along axis=0 (3 elements)
+    # Test along axis=0 (3 elements)
     result_axis0 = cohens_d(x_single, y_single, axis=0)
     assert result_axis0.shape == (1,)
     assert not np.isnan(result_axis0[0])
@@ -220,7 +220,7 @@ def test_edge_cases_multidimensional():
     x_mixed = np.random.normal(0, 1, (1, 10, 5))
     y_mixed = np.random.normal(0.3, 1, (1, 10, 5))
     
-    # Should work along axes with multiple elements
+    # Test along axis with multiple elements
     result_axis1 = cohens_d(x_mixed, y_mixed, axis=1)
     assert result_axis1.shape == (1, 5)
     assert not np.any(np.isnan(result_axis1))

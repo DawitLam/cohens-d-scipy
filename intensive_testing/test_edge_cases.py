@@ -172,11 +172,11 @@ class TestEdgeCases:
     def test_mismatched_array_lengths(self):
         """Test arrays with different lengths."""
         
-        # Different length arrays should work fine for independent samples
+        # Independent samples can have different lengths
         x = [1, 2, 3]
         y = [4, 5, 6, 7, 8]
         result = cohens_d(x, y)
-        assert np.isfinite(result), f"Different lengths should work, got {result}"
+        assert np.isfinite(result), f"Different lengths failed, got {result}"
         
         # But should fail for paired samples
         with pytest.raises(ValueError):

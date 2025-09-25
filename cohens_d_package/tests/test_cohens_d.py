@@ -133,8 +133,7 @@ class TestCohensD:
         # Use arrays that definitely can't be broadcast together
         x_wrong_shape = np.random.normal(0, 1, (10, 3))
         y_wrong_shape = np.random.normal(0, 1, (15, 4))
-        # Our current implementation might not catch all broadcast errors,
-        # so let's test with a case that should definitely fail
+        # Test with incompatible array shapes that should fail
         try:
             result = cohens_d(x_wrong_shape, y_wrong_shape)
             # If it doesn't raise an error, that's also acceptable for now
@@ -337,7 +336,7 @@ class TestCohensD:
         x_small = np.array([1, 2])
         y_small = np.array([2, 3])
         
-        # Should work but df will be very small
+        # Test bias correction with very small degrees of freedom
         result = cohens_d(x_small, y_small, bias_correction=True)
         assert not np.isnan(result)
         
