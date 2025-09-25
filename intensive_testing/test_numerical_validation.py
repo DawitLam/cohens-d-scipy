@@ -24,10 +24,10 @@ except ImportError:
 class TestNumericalValidation:
  """Test against known Cohen's d values from literature."""
 
- def test_cohen_1988_examples(self):
- """Test examples from Cohen (1988) Statistical Power Analysis."""
+    def test_cohen_1988_examples(self):
+        """Test examples from Cohen (1988) Statistical Power Analysis."""
 
- # Create controlled data with exact means and SDs
+        # Create controlled data with exact means and SDs
  # Group 1: M=10, SD=2
  # Group 2: M=12, SD=2
  # Expected Cohen's d = (12-10)/2 = 1.0
