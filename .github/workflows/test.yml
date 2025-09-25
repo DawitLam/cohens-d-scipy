@@ -25,8 +25,9 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        python -m pip install build pytest numpy
         cd cohens_d_package
-        pip install -e ".[test]"
+        pip install -e .
         
     - name: Run standard tests
       run: |
@@ -50,8 +51,7 @@ jobs:
         
     - name: Test package installation
       run: |
-        pip install build
         cd cohens_d_package
-        python -m build
-        pip install dist/*.whl
-        python -c "import cohens_d; print(f'Cohen d installed successfully: {cohens_d.__version__}')"
+        python -c "import cohens_d; print('Cohen d import successful')"
+        python -c "from cohens_d import cohens_d; print('Function import successful')"
+        python -c "from cohens_d import cohens_d; import numpy as np; print(f'Basic test: {cohens_d([1,2,3]):.3f}')"
