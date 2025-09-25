@@ -40,22 +40,7 @@ jobs:
     - name: Run validation tests
       run: |
         cd cohens_d_package
-        python -c "
-import sys
-sys.path.append('.')
-from cohens_d import cohens_d
-import numpy as np
-
-# Basic functionality tests
-print('Testing basic functionality...')
-result1 = cohens_d([1, 2, 3], [4, 5, 6])
-print(f'Basic test: {result1:.3f}')
-
-result2 = cohens_d([1, 2, 3])
-print(f'One-sample test: {result2:.3f}')
-
-print('All basic tests passed!')
-"
+        python -c "import sys; sys.path.append('.'); from cohens_d import cohens_d; import numpy as np; print('Testing basic functionality...'); result1 = cohens_d([1, 2, 3], [4, 5, 6]); print(f'Basic test: {result1:.3f}'); result2 = cohens_d([1, 2, 3]); print(f'One-sample test: {result2:.3f}'); print('All basic tests passed!')"
         
     - name: Test package installation
       run: |
