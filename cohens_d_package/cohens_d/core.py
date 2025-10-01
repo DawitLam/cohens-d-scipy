@@ -7,7 +7,6 @@ for both one-sample and two-sample comparisons.
 
 import numpy as np
 import warnings
-from typing import Optional, Union
 
 
 def cohens_d(x, y=None, *, paired=False, bias_correction=False, axis=None, 
@@ -105,8 +104,8 @@ def cohens_d(x, y=None, *, paired=False, bias_correction=False, axis=None,
     >>> x = np.random.normal(0, 1, 100)
     >>> y = np.random.normal(0.5, 1, 100)  
     >>> d = cohens_d(x, y)
-    >>> print(f"Cohen's d: {d:.3f}")  # doctest: +SKIP
-    Cohen's d: -0.505
+    >>> abs(d) > 0.4  # Should show moderate effect size
+    True
     
     Calculate one-sample Cohen's d:
     
@@ -176,17 +175,11 @@ def cohens_d(x, y=None, *, paired=False, bias_correction=False, axis=None,
     
     # Process axis parameter
     if axis is not None:
-        # Use numpy's standard function to normalize axis
-        if hasattr(np, 'core') and hasattr(np.core, 'numeric'):
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore")
-                axis = np.core.numeric.normalize_axis_index(axis, x.ndim)
-        else:
-            # Fallback for older numpy versions
-            if axis < 0:
-                axis = x.ndim + axis
-            if axis < 0 or axis >= x.ndim:
-                raise np.AxisError(f"axis {axis} is out of bounds for array of dimension {x.ndim}")
+        # Normalize axis index
+        if axis < 0:
+            axis = x.ndim + axis
+        if axis < 0 or axis >= x.ndim:
+            raise np.AxisError(f"axis {axis} is out of bounds for array of dimension {x.ndim}")
         if y is not None and y.ndim != x.ndim:
             raise ValueError("x and y must have the same number of dimensions")
     
